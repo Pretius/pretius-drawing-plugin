@@ -1,0 +1,244 @@
+.fa-plus-square {
+    color: green;
+}
+
+.t-ButtonRegion-col--content {
+    display: flex;
+}
+
+li {
+    list-style-type: none;
+}
+
+.li {
+    margin-top: 12px;
+    margin-bottom: 5px;
+}
+
+ul li {
+    list-style: none;
+}
+
+.drag-list img {
+    width: 80px;
+    height: 80px;
+    vertical-align: middle;
+    cursor: move;
+}
+
+.drag-list ul {
+    margin: 0;
+    padding: 0;
+}
+
+.drag-list li {
+    margin-bottom: 5px;
+}
+
+li.horizontal {
+    padding: 5px 0px 5px 0px;
+    height: 50px;
+    list-style-type: none;
+}
+
+.separator {
+    width: 10px;
+    height: 50px;
+    float: left;
+}
+
+
+.not-selectable {
+    pointer-events: none;
+}
+
+.select-type {
+    width: auto;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid rgb(213, 213, 213);
+    background-color: white;
+    border-radius: 5px;
+    float: left;
+}
+
+.type-select-section {
+    /*display: flex;*/
+    margin-bottom: 10px;
+}
+
+#droppable {
+    width: 550px;
+    height: 540px;
+    border: 1px solid black;
+
+}
+
+.grid-background {
+    --s: 100px;
+    /* control the size */
+    --_g: #0000 90deg, rgb(209, 234, 245) 0;
+    background:
+        conic-gradient(from 90deg at 2px 2px, var(--_g)) 0 0/var(--s) var(--s),
+        conic-gradient(from 90deg at 1px 1px, var(--_g)) 0 0/calc(var(--s)/5) calc(var(--s)/5);
+}
+
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+
+.remove-drag-hover {
+    background-color: #ed4949 !important;
+}
+
+.drag {
+    resize: both;
+    overflow: auto;
+}
+
+.id-input {
+    text-align: right;
+    width: calc(100% - 10px);
+    background-color: lightblue;
+    border: 0.5px solid gray;
+}
+
+.remove {
+    overflow: hidden;
+}
+.button-dropdown-map{
+    margin-right: 5px !important;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 200px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  .dropdown-inner{
+      padding: 20px;
+  }
+  .dropdown-inner>button{
+    width: 100%;
+  }
+  
+  .show {display: block;}
+  .size-input{
+    margin-bottom: 5px;
+  }
+  ul.custom-tabs{
+    margin-bottom: 4px;
+  }
+
+  .vertical {
+    rotate: 90deg;
+}
+
+#size-settings {
+    margin: 10px;
+}
+
+.component {
+    margin: 10px;
+}
+
+.components-row {
+    display: flex;
+    width: 100%;
+    border: 1px solid rgb(213, 213, 213);
+    border-radius: 5px;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.select-type {
+    width: auto;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid rgb(213, 213, 213);
+    background-color: white;
+    border-radius: 5px;
+    float: left;
+}
+
+.type-select-section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+
+.select-type.active {
+    background-color: rgb(94, 191, 255);
+}
+
+.ui-droppable-active {
+    background-color: transparent !important;
+}
+
+.grid-left {
+    max-width: 70%;
+    float: left;
+}
+
+.grid-right {
+    min-width: 30%;
+    float: left;
+    margin-left: 12px;
+    margin-top: 45px;
+}
+
+.selected {
+    outline: thick solid lightgreen;
+}
+
+.inputs {
+    width: 70px;
+}
+
+.left-side-buttons {
+    display: flex;
+    flex-direction: row;
+}
+
+.drawing-plugin-body {
+    display: flex;
+    flex-direction: row;
+}
+
+.droppable-scroll-parent {
+    overflow-y: auto;
+}
+
+.dropable-zone-body {
+    position: relative;
+    margin-top: 8px;
+    ;
+}
+.t-Tabs-item{
+    cursor: pointer !important;
+}
+.t-Tabs-link{
+    cursor: pointer !important;
+}
+#mapSettingsDropdown > div > div:nth-child(1) > label{
+    margin-right: 5px;
+}
