@@ -54,7 +54,11 @@ BEGIN
     end loop;
   sys.htp.p('</style>');
   --
-  sys.htp.p('<div class="grid-left">');
+  if l_editable = 'Y' then 
+    sys.htp.p('<div class="grid-left">');
+  else 
+    sys.htp.p('<div class="grid-full-span">');
+  end if;
   if l_editable = 'Y' then 
     sys.htp.p('<div class="left-side-buttons">
       <div class="dropdown">
@@ -135,9 +139,9 @@ BEGIN
   v_data := apex_plugin_util.get_data(
     p_sql_statement => p_region.source, 
     p_min_columns   => 1, 
-    p_max_columns   => 30, 
+    p_max_columns   => 50, 
     p_component_name => p_region.name,
-    p_max_rows => 1000);
+    p_max_rows => 2000);
   
   for i in v_data.first .. v_data(1).count loop
     BEGIN
@@ -166,25 +170,32 @@ BEGIN
         );
       if i = 1 then 
         v_json_enclave := v_json_enclave || v_json;
+        htp.p('<div class="json-data-containers" data-json='''|| v_json ||'''></div>');
       else 
         v_json_enclave := v_json_enclave || ',' || v_json;
+        htp.p('<div class="json-data-containers" data-json='''|| ',' || v_json ||'''></div>');
       end if;
     EXCEPTION WHEN OTHERS THEN 
         htp.p('<div> ERROR ' || i || '</div>');
     END;
   end loop;
-
+  
   v_json_enclave := v_json_enclave || '}';
   --Editable or not
-  if l_editable = 'Y' then
-    apex_javascript.add_onload_code (
-      p_code => 'recreateFromJson('''||v_json_enclave||''',true);',
-      p_key  => 'my_super_widget');
-  else 
-    apex_javascript.add_onload_code (
-      p_code => 'recreateFromJson('''||v_json_enclave||''',false);',
-      p_key  => 'my_super_widget');
-  end if;
+  BEGIN
+      if l_editable = 'Y' then
+        apex_javascript.add_onload_code (
+          p_code => 'recreateFromJson(true);',
+          p_key  => 'my_super_widget');
+      else 
+        apex_javascript.add_onload_code (
+          p_code => 'recreateFromJson(false);',
+          p_key  => 'my_super_widget');
+      end if;
+  EXCEPTION WHEN OTHERS THEN 
+    htp.p('<div> ERROR ' || sqlerrm || '</div>');
+    htp.p('<div> ERROR ' || dbms_utility.format_error_backtrace || '</div>');
+  END;
 /*--------------------------------------------------------
   Plugin source END
 --------------------------------------------------------*/
@@ -203,11 +214,18 @@ FUNCTION ajax_region(p_region IN apex_plugin.t_region,
   -- plugin attributes
   l_result apex_plugin.t_region_ajax_result;
   l_val clob := apex_application.g_x01;
+  l_first_batch number := apex_application.g_x02;
   l_query clob;
   l_collection_name p_region.attribute_01%TYPE := p_region.attribute_01;
+  l_row_count number := 0;
   --
 BEGIN
-  l_query := q'[
+    if l_first_batch = 1 then 
+        APEX_COLLECTION.CREATE_OR_TRUNCATE_COLLECTION(
+        p_collection_name => l_collection_name);
+    end if;
+  --
+  for component_rec in (
         select 
           width, height
           , top, left, class, text
@@ -216,7 +234,7 @@ BEGIN
           , rotate
           , innerHtml
         from JSON_TABLE 
-          (']'||l_val||q'[', '$' COLUMNS
+          (l_val, '$' COLUMNS
               (NESTED path '$.*' COLUMNS
                   (
                       width varchar2 PATH '$.width',
@@ -231,18 +249,35 @@ BEGIN
                   )
               )
           ) j
-    ]';
-    APEX_COLLECTION.CREATE_COLLECTION_FROM_QUERY (
-        p_collection_name    => l_collection_name,
-        p_query              => l_query,
-        p_generate_md5       => NULL,
-        p_truncate_if_exists => 'YES');
-  commit;
+    )
+    loop
+      BEGIN
+      APEX_COLLECTION.ADD_MEMBER(
+        p_collection_name => l_collection_name,
+        p_c001            => component_rec.width,
+        p_c002            => component_rec.height,
+        p_c003            => component_rec.top,
+        p_c004            => component_rec.left,
+        p_c005            => component_rec.class,
+        p_c006            => component_rec.text,
+        p_c007            => component_rec.available,
+        p_c008            => component_rec.spot_id,
+        p_c009            => component_rec.rotate,
+        p_c010            => component_rec.innerHtml
+      );
+      l_row_count := l_row_count + 1;
+      EXCEPTION WHEN OTHERS THEN NULL;
+      END;
+    end loop;
   --
   apex_json.open_object;
     apex_json.write(
     p_name => 'success'
     , p_value => true
+    );
+    apex_json.write(
+    p_name => 'rows_inserted'
+    , p_value => l_row_count
     );
 
     apex_json.close_object;

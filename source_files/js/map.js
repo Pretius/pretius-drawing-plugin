@@ -4,8 +4,18 @@
  * @param {string} jsonData - The JSON data representing the elements.
  * @param {boolean} editable - Indicates whether the elements should be editable.
  */
-function recreateFromJson(jsonData, editable) {
+function recreateFromJson( editable) {
     console.log('recreateFromJson');
+    //Fetching the data from divs
+    var dataFromDivs = $(".json-data-containers");
+    console.log($( ".json-data-containers" ).length)
+    var jsonFromDivs = "{";
+    for (let index = 0; index < dataFromDivs.length; index++) {
+        const element = dataFromDivs[index];
+        jsonFromDivs = jsonFromDivs + $(element).data("json");
+    }
+    jsonFromDivs = jsonFromDivs + '}';
+    jsonData = jsonFromDivs;
     // Parse the JSON string to get the data object
     var data = JSON.parse(jsonData);
 
@@ -112,7 +122,7 @@ function saveToJson() {
             top: $(this).css("top"),
             left: $(this).css("left"),
             class: $(this).attr('class'),
-            text: $(this).find('input').val(),
+            text: $(this).find('textarea').val(),
             rotate: $(this).css("rotate"),
             spotId: id,
             innerHtml: (this.innerHTML).replaceAll('"', '@').replace(/(\r\n|\n|\r)/gm, "")
@@ -190,7 +200,7 @@ function prepareEditor() {
                 x.removeClass('drag');
                 //Add input into DIV
                 if ((x.hasClass("parking-space") || (x.hasClass("parking-space-vertical"))) && !x.find('.id-input').length) {
-                    var input = $('<input type="text" placeholder="Enter text" class="id-input"/>');
+                    var input = $('<textarea type="text" placeholder="Enter text" class="id-input"/>');
                     x.append(input);
                 }
 
@@ -277,7 +287,7 @@ function addDivicons(div) {
  */
 function addInputAndAvailabilityClass(element, divData) {
     if (element.hasClass("parking-space") || element.hasClass("parking-space-vertical") || element.hasClass("label")) {
-        var input = $('<input type="text" placeholder="" class="id-input"/>');
+        var input = $('<textarea type="text" placeholder="" class="id-input"/>');
         input.val(divData.text);
         element.append(input);
 

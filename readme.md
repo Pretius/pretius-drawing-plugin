@@ -36,6 +36,12 @@ Pretius Drawing plugin is an Oracle APEX region plugin developed by Tomas Kuchar
 
  - Initial version
 
+1.1: October 2023
+
+ - Fixed compatibility with 22.2.
+ - Changed the logic of save and load to increase maximum count of used components
+ - Changed inputs in parking spots to text areas
+
 ## Plugin Installation and configuration
 
  First install SQL file with component tables and included components
