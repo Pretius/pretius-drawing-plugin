@@ -9,10 +9,10 @@
 - [User Manual](#user-manual)
 - [Components settings](#components-settings)
 - [Known issues and future development](#known-issues-and-future-development)
-- [Calibration] (#Calibration)
-- [License](#License)
-- [Free support](#Free-support)
-- [Commercial support](#Commercial-support)
+- [Calibration](#calibration)
+- [License](#license) 
+- [Free support](#free-support) 
+- [Commercial support](#commercial-support) 
 
 ## What is Drawing plugin
 
