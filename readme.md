@@ -9,6 +9,7 @@
 - [User Manual](#user-manual)
 - [Components settings](#components-settings)
 - [Known issues and future development](#known-issues-and-future-development)
+- [Calibration] (#Calibration)
 - [License](#License)
 - [Free support](#Free-support)
 - [Commercial support](#Commercial-support)
@@ -41,6 +42,10 @@ Pretius Drawing plugin is an Oracle APEX region plugin developed by Tomas Kuchar
  - Fixed compatibility with 22.2.
  - Changed the logic of save and load to increase maximum count of used components
  - Changed inputs in parking spots to text areas
+
+1.2: November 2023
+
+ - Added left and top calibration into region attributes
 
 ## Plugin Installation and configuration
 
@@ -142,6 +147,10 @@ You can create additional components / component types and add them into tables.
 ## Known issues and future development
  1. Feature: Drag all selected items at once
  2. Error: Some components get selected when draged around or resized
+
+## Calibration
+To enhance the precision of drag & drop, we have included Left and Top margin attributes in the region settings. This allows you to fine-tune the drop position.
+For more information, please refer to the User Manual: [Link to User manual](user_manual.md)
 
 ## License
 

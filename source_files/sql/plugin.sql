@@ -20,6 +20,8 @@ FUNCTION render_region(p_region              IN apex_plugin.t_region,
   l_attr_01  p_region.attribute_01%TYPE := p_region.attribute_01;
   l_editable p_region.attribute_02%TYPE := p_region.attribute_02;
   l_resize   p_region.attribute_03%TYPE := replace(NVL(p_region.attribute_03,1),'.',',');
+  l_left_margin p_region.attribute_04%TYPE := p_region.attribute_04;
+  l_top_margin  p_region.attribute_05%TYPE := p_region.attribute_05;
   -- other vars
   l_region_id       VARCHAR2(4000 char);
   l_ajax_identifier clob;
@@ -61,7 +63,7 @@ BEGIN
   end if;
   if l_editable = 'Y' then 
     sys.htp.p('<div class="left-side-buttons">
-      <div class="dropdown">
+      <div class="dropdown"  data-left-margin="'||l_left_margin||'" data-top-margin="'||l_top_margin||'">
         <button class="t-Button t-Button--primary t-Button--icon t-Button--iconLeft button-dropdown-map" 
           onclick="toggleMapSettings()" type="button" title="Map settings - on click open/hide options menu">
           <span class="t-Icon t-Icon--left fa fa-cog" aria-hidden="true"></span>

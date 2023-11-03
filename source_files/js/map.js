@@ -220,8 +220,10 @@ function prepareEditor() {
                 var element = $('#drawing-plugin').parent();
                 var rect = $(element)[0].getBoundingClientRect();
                 var parentTopMargin = rect.top;
-                x.css("left", leftOffset-parentLeftMargin-11); //11 is left margin of component + border 1px
-                x.css("top", topOffset - parentTopMargin  + 9); //9 is margin of dropzone + border 1 px
+                var leftMarginVal = $('.dropdown').data('leftMargin');
+                var topMarginVal = $('.dropdown').data('topMargin');
+                x.css("left", leftOffset-parentLeftMargin + leftMarginVal); //11 is left margin of component + border 1px
+                x.css("top", topOffset - topMarginVal); //9 is margin of dropzone + border 1 px
                 x.bind('dragstop', function () { select(this) });
             }
         }

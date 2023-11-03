@@ -49,3 +49,15 @@ It will automatically appear in the plugin right component pane
 <img  src="readme_files/css.png"  width="33%"  />
 <img  src="readme_files/result.png"  width="33%"  />
 </div>
+
+## Calibration
+
+To adjust the component's drop position, you can use the 'Left Margin' and 'Top Margin' attributes in the region settings.
+
+Drag and drop the component into the planner and pay attention to whether it appears in the correct spot where you dropped it. If not, adjust the margin values and repeat the process.
+
+Margins may need to be adjusted each time you change the region type, padding, or margins.
+
+<div  style="float: left"><p  align="center">
+<img  src="readme_files/calibration.png"  width="800"  />
+</p></div>
