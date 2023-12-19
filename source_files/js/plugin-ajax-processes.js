@@ -1,4 +1,4 @@
-var region = $('#drawing-plugin');
+var region = $('.drawing-plugin-body');
 var ajaxidentifier = region.data("ajax-identifier");
 //
 var isFirstBatch = 1;

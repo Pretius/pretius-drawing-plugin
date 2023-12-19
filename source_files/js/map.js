@@ -1,14 +1,15 @@
 /**
  * Recreates the HTML elements from JSON data.
  *
- * @param {string} jsonData - The JSON data representing the elements.
  * @param {boolean} editable - Indicates whether the elements should be editable.
+ * @param {string} region_id - Identify region.
  */
-function recreateFromJson( editable) {
+function recreateFromJson(editable, region_id) {
     console.log('recreateFromJson');
+    region_id = region_id.id;
     //Fetching the data from divs
-    var dataFromDivs = $(".json-data-containers");
-    console.log($( ".json-data-containers" ).length)
+    var dataFromDivs = $(".json-data-" + region_id);
+    console.log($(".json-data-" + region_id).length);
     var jsonFromDivs = "{";
     for (let index = 0; index < dataFromDivs.length; index++) {
         const element = dataFromDivs[index];
@@ -24,21 +25,25 @@ function recreateFromJson( editable) {
         //$('#wrapper')[0].innerHTML = "";
     }
     //var droppableDiv = editable ? $('#droppable') : $('<div id="droppable"></div>');
-    var droppableDiv = $('#droppable');
-    var width = (Object.keys(data).length > 0) ? data.droppable.width : document.getElementById("winput").value;
-    var height = (Object.keys(data).length > 0) ? data.droppable.height : document.getElementById("hinput").value;
-    if (editable) {
-        droppableDiv.css({
-            width: width,
-            height: height
-        });
-    } else {
-        droppableDiv.css({
-            width: width,
-            height: height,
-            position: 'relative',
-            backgroundColor: '#eee'
-        });
+    var droppableDiv = $('#droppable.' + region_id);
+    try {
+        var width = (Object.keys(data).length > 0) ? data.droppable.width : document.getElementById("winput").value;
+        var height = (Object.keys(data).length > 0) ? data.droppable.height : document.getElementById("hinput").value;
+        if (editable) {
+            droppableDiv.css({
+                width: width,
+                height: height
+            });
+        } else {
+            droppableDiv.css({
+                width: width,
+                height: height,
+                position: 'relative',
+                backgroundColor: '#eee'
+            });
+        }
+    }catch(err){
+        console.log('No inputs');
     }
 
     // Iterate over the divs in the JSON data and recreate them
@@ -216,13 +221,13 @@ function prepareEditor() {
 
                 x.css('position', 'absolute');
                 //Calibration of drop margins
-                var parentLeftMargin = ($('#drawing-plugin').parent().css("marginLeft")).replace('px','');
-                var element = $('#drawing-plugin').parent();
+                var parentLeftMargin = ($('.drawing-plugin-body').parent().css("marginLeft")).replace('px', '');
+                var element = $('.drawing-plugin-body').parent();
                 var rect = $(element)[0].getBoundingClientRect();
                 var parentTopMargin = rect.top;
                 var leftMarginVal = $('.dropdown').data('leftMargin');
                 var topMarginVal = $('.dropdown').data('topMargin');
-                x.css("left", leftOffset-parentLeftMargin + leftMarginVal); //11 is left margin of component + border 1px
+                x.css("left", leftOffset - parentLeftMargin + leftMarginVal); //11 is left margin of component + border 1px
                 x.css("top", topOffset - topMarginVal); //9 is margin of dropzone + border 1 px
                 x.bind('dragstop', function () { select(this) });
             }

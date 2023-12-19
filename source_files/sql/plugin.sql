@@ -37,8 +37,7 @@ BEGIN
                                   p_region => p_region);
   END IF;
   -- set vars
-  l_region_id := apex_escape.html_attribute(p_region.static_id ||
-                                            '_myregion');
+  l_region_id := nvl(apex_escape.html_attribute(p_region.static_id),'drawing-region');
   l_ajax_identifier := apex_plugin.get_ajax_identifier;                                          
   -- escape input
   l_attr_01 := apex_escape.html(l_attr_01);
@@ -46,7 +45,7 @@ BEGIN
 /*---------------------
     RENDER START
 ----------------------*/
-  sys.htp.p('<div id="drawing-plugin" data-ajax-identifier="'||l_ajax_identifier||'"' ||
+  sys.htp.p('<div id="drawing-plugin-'||l_region_id||'" data-ajax-identifier="'||l_ajax_identifier||'"' ||
             ' class="drawing-plugin-body">');
   --STYLE
   sys.htp.p('<style>');
@@ -94,7 +93,7 @@ BEGIN
     </div>');
   end if;
   sys.htp.p('<div class="droppable-scroll-parent">
-    <div class="dropable-zone-body" id="droppable"></div>
+    <div class="dropable-zone-body '||l_region_id||'" id="droppable"></div>
     </div>
   </div>');
   --
@@ -172,10 +171,10 @@ BEGIN
         );
       if i = 1 then 
         v_json_enclave := v_json_enclave || v_json;
-        htp.p('<div class="json-data-containers" data-json='''|| v_json ||'''></div>');
+        htp.p('<div class="json-data-'||l_region_id||'" data-json='''|| v_json ||'''></div>');
       else 
         v_json_enclave := v_json_enclave || ',' || v_json;
-        htp.p('<div class="json-data-containers" data-json='''|| ',' || v_json ||'''></div>');
+        htp.p('<div class="json-data-'||l_region_id||'" data-json='''|| ',' || v_json ||'''></div>');
       end if;
     EXCEPTION WHEN OTHERS THEN 
         htp.p('<div> ERROR ' || i || '</div>');
@@ -187,12 +186,12 @@ BEGIN
   BEGIN
       if l_editable = 'Y' then
         apex_javascript.add_onload_code (
-          p_code => 'recreateFromJson(true);',
-          p_key  => 'my_super_widget');
+          p_code => 'recreateFromJson(true,'||l_region_id||');',
+          p_key  => l_region_id);
       else 
         apex_javascript.add_onload_code (
-          p_code => 'recreateFromJson(false);',
-          p_key  => 'my_super_widget');
+          p_code => 'recreateFromJson(false,'||l_region_id||');',
+          p_key  => l_region_id);
       end if;
   EXCEPTION WHEN OTHERS THEN 
     htp.p('<div> ERROR ' || sqlerrm || '</div>');
