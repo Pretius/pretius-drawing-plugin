@@ -47,6 +47,10 @@ Pretius Drawing plugin is an Oracle APEX region plugin developed by Tomas Kuchar
 
  - Added left and top calibration into region attributes
 
+1.3: December 2023
+
+ - Code changes, plugin can be now used multiple times on one page
+
 ## Plugin Installation and configuration
 
  First install SQL file with component tables and included components
