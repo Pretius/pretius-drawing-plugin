@@ -71,6 +71,7 @@ BEGIN
         </button>
         <div id="mapSettingsDropdown" class="dropdown-content">
         <div class="dropdown-inner">
+          <label class="settings-label" for="background-color">Planner options</label>
           <div class="size-input">
             <label for="fname">Width:</label>
             <input type="text" id="winput" class="inputs" name="width" value="800">
@@ -79,7 +80,24 @@ BEGIN
             <label for="fname">Height:</label>
             <input type="text" id="hinput" class="inputs" name="height" value="500">
           </div>
-          <button class="t-Button" type="button" onClick="showGrid();">Show Grid</button>
+          <button class="t-Button t-Button--primary" type="button" onClick="showGrid();">Show Grid</button>
+          <div style="margin: 10px 0px 0px 0px;">
+            <div class="size-input">
+              <label class="settings-label" for="background-color">Background options</label>
+            </div>
+            <div class="size-input">
+              <label for="background-switch">Add background from image</label>
+              <input onChange="setImage()" type="checkbox" id="background-switch" class="t-Switch-input">
+            </div>
+            <div class="size-input">
+              <label for="image-path">Image path:</label>
+              <input  onChange="setImage()" type="text" id="image-path" class="image-path-input" placeholder="Enter image path">
+            </div>
+            <div class="size-input">
+              <label for="image-opacity">Image opacity:</label>
+              <input  onChange="setImage()" type="number" step="0.1" value="0.3" id="image-opacity" class="image-opacity-input" placeholder="Opacity">
+            </div>
+          </div>
         </div>
         </div>
       </div>
@@ -93,7 +111,7 @@ BEGIN
     </div>');
   end if;
   sys.htp.p('<div class="droppable-scroll-parent">
-    <div class="dropable-zone-body '||l_region_id||'" id="droppable"></div>
+    <div class="dropable-zone-body '||l_region_id||'" id="droppable" data-app-files-path="#APP_FILES#"></div>
     </div>
   </div>');
   --

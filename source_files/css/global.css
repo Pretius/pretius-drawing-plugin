@@ -256,3 +256,7 @@ li.horizontal {
     height: 90%;
     text-align: right;
 }
+.settings-label{
+    font-weight: bold;
+    padding: 2px 0px 0px 0px;
+}

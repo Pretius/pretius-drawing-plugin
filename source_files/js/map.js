@@ -42,7 +42,7 @@ function recreateFromJson(editable, region_id) {
                 backgroundColor: '#eee'
             });
         }
-    }catch(err){
+    } catch (err) {
         console.log('No inputs');
     }
 
@@ -336,6 +336,23 @@ function rotate(pi_id, pi_value) {
     }
 }
 
+//Function that takes the image path from input with id image-path and sets it as background image of div with id droppable
+function setImage() {
+    var imagePath = document.getElementById("image-path").value;
+    var image = document.getElementById("droppable");
+    var opacity = 1 - document.getElementById("image-opacity").value;
+    //get the base url from data-app-files-path from div with id droppable
+    var baseurl = document.getElementById("droppable").getAttribute("data-app-files-path");
+    //if checkbox with id background-switch is checked, set the image as background image of div with id droppable
+    if (document.getElementById("background-switch").checked) {
+        image.style.backgroundImage = "linear-gradient( rgba(255,255,255," + opacity + "), rgba(255,255,255," + opacity + ")), url('" + baseurl + imagePath + "')";
+        image.style.backgroundSize = "100% 100%";
+    } else {
+        image.style.backgroundImage = "";
+        image.style.backgroundSize = "";
+    }
+}
+
 /**
  * Selects or deselects an element based on its current state.
  *
@@ -349,16 +366,18 @@ function select(pi_element) {
     } else {
         var selectedElement = this.event.target;
     }
-    if (!$(selectedElement).hasClass('ui-resizable-handle')) {
-        if (!$(selectedElement).hasClass('component') && !$(selectedElement).hasClass('id-input') && !$(selectedElement).hasClass('ignore-selected')) {
-            selectedElement = $(selectedElement).closest('.component');
-        }
-        if ($(selectedElement).hasClass('selected')) {
-            $(selectedElement).removeClass('selected');
-        } else if ($(selectedElement).hasClass('component')) {
-            $(selectedElement).addClass('selected');
-        } else if (!$(selectedElement).hasClass('component')) {
-            $(selectedElement).find('.component').addClass('selected');
+    if (!$(selectedElement).parent().hasClass('components-row')) {
+        if (!$(selectedElement).hasClass('ui-resizable-handle')) {
+            if (!$(selectedElement).hasClass('component') && !$(selectedElement).hasClass('id-input') && !$(selectedElement).hasClass('ignore-selected')) {
+                selectedElement = $(selectedElement).closest('.component');
+            }
+            if ($(selectedElement).hasClass('selected')) {
+                $(selectedElement).removeClass('selected');
+            } else if ($(selectedElement).hasClass('component')) {
+                $(selectedElement).addClass('selected');
+            } else if (!$(selectedElement).hasClass('component')) {
+                $(selectedElement).find('.component').addClass('selected');
+            }
         }
     }
 }
@@ -523,6 +542,9 @@ function rotateSelected() {
         const element = allSelected[index];
         var rotateByDeg = 45;
         var currentDeg = $(element).css("rotate");
+        if (currentDeg == '360deg') {
+            currentDeg = 'none';
+        }
         if (currentDeg == 'none') {
             $(element).css("rotate", rotateByDeg + "deg");
         } else {

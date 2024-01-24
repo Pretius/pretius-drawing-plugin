@@ -61,3 +61,14 @@ Margins may need to be adjusted each time you change the region type, padding, o
 <div  style="float: left"><p  align="center">
 <img  src="readme_files/calibration.png"  width="800"  />
 </p></div>
+
+## Add planner background
+To add planner background simply upload the image into Application static files and use the name of the file in plugin background settings. You can also set the opacity of the background. 
+After you upload the image file into the static files, use only the actual path to te file without APP_FILES. For example if you have static file with path "#APP_FILES#test-bg.png" use only test-bg.png as path.
+
+<div  style="float: left"><p  align="center">
+<img  src="readme_files/background-options2.png"  width="800"  />
+</p></div>
+<div  style="float: left"><p  align="center">
+<img  src="readme_files/adding-background.gif"  width="800"  />
+</p></div>

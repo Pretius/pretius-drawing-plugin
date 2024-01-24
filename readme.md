@@ -22,6 +22,7 @@ Pretius Drawing plugin is an Oracle APEX region plugin developed by Tomas Kuchar
  - Interactivity: User customizable functions for interactive plans
  - Save and load from collection
  - Render the plan in different scale based on region attribute (resize)
+ - Add plan background to place components with ease 
 
 <div  style="float: left"><p  align="center">
 <img  src="readme_files/plugin1.gif"  width="800"  />
@@ -50,6 +51,13 @@ Pretius Drawing plugin is an Oracle APEX region plugin developed by Tomas Kuchar
 1.3: December 2023
 
  - Code changes, plugin can be now used multiple times on one page
+
+1.4: January 2024
+
+ - Added save progress messages
+ - New feature - add background image to the plan
+ - Removed select functionality from component templates (right panel)
+ - Bug fixes
 
 ## Plugin Installation and configuration
 
@@ -133,6 +141,15 @@ To render the plan in different scale, the region editable attribute has to be s
 <img  src="readme_files/resize_after.png"  width="800"  />
 </p></div>
 
+### Add planner background
+To add planner background simply upload the image into Application static files and use the name of the file in plugin background settings. You can also set the opacity of the background.
+
+<div  style="float: left"><p  align="center">
+<img  src="readme_files/background-options2.png"  width="800"  />
+</p></div>
+<div  style="float: left"><p  align="center">
+<img  src="readme_files/adding-background.gif"  width="800"  />
+</p></div>
 
 ## User Manual
 [Link to User manual](user_manual.md)

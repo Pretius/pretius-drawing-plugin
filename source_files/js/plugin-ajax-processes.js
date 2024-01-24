@@ -3,7 +3,7 @@ var ajaxidentifier = region.data("ajax-identifier");
 //
 var isFirstBatch = 1;
 //
-function sendToApex(data, isLastBatch) {
+function sendToApex(data, isLastBatch,totalCount,savedCount) {
     return new Promise((resolve, reject) => {
         apex.server.plugin(
             ajaxidentifier,
@@ -14,8 +14,12 @@ function sendToApex(data, isLastBatch) {
             {
                 success: function (pData) {
                     console.log(pData);
+                    if (!isLastBatch){
+                        apex.message.showPageSuccess('Drawing data saved ' + savedCount + '/' + totalCount);
+                    }
                     if (isLastBatch) {
-                        apex.message.showPageSuccess('Drawing data saved to collection');
+                        apex.message.showPageSuccess('All drawing data saved to collection ('+totalCount+')');
+                        console.log('All drawing data saved to collection ('+totalCount+')');
                     }
                     isFirstBatch = 0;
                     resolve(pData);
@@ -36,6 +40,8 @@ async function testProcess() {
     
     var yourJSONObject = JSON.parse(jsonData);
     var i = 0;
+    var totalCount = Object.keys(yourJSONObject).length;
+    var savedCount = 0;
 
     async function sendBatch() {
         console.log('Saving data');
@@ -46,7 +52,8 @@ async function testProcess() {
                 jsonAgg[key] = obj;
                 i++;
                 if (i % 10 === 0 || i === Object.keys(yourJSONObject).length) {
-                    await sendToApex(jsonAgg, i === Object.keys(yourJSONObject).length);
+                    savedCount += 10;
+                    await sendToApex(jsonAgg, i === Object.keys(yourJSONObject).length,totalCount,savedCount);
                     jsonAgg = {};
                     if (i === Object.keys(yourJSONObject).length) break;
                 }
