@@ -80,8 +80,8 @@ function recreateFromJson(editable, region_id) {
     if (editable) {
         //Reactivate draggable and resizable
         $(".remove")
-            .resizable()
-            .draggable();
+            .resizable({grid: [1, 1]})
+            .draggable({grid: [1, 1]});
     } else {
         // Append the recreated droppable zone to the document body or any desired parent element
         $('#wrapper').append(droppableDiv);
@@ -111,8 +111,8 @@ function saveToJson() {
     var droppableData = {
         width: $(droppableDiv).css("width"),
         height: $(droppableDiv).css("height"),
-        top: droppableDiv.offset().top,
-        left: droppableDiv.offset().left,
+        top: '0px',//droppableDiv.offset().top,
+        left: '0px',//droppableDiv.offset().left,
         class: droppableDiv.attr('class'),
         spotId: droppableDiv.id
     };
@@ -124,8 +124,8 @@ function saveToJson() {
         var divData = {
             width: $(this).css("width"),
             height: $(this).css("height"),
-            top: $(this).css("top"),
-            left: $(this).css("left"),
+            top: Math.round(parseFloat($(this).css("top"))) + 'px',
+            left: Math.round(parseFloat($(this).css("left"))) + 'px',
             class: $(this).attr('class'),
             text: $(this).find('textarea').val(),
             rotate: $(this).css("rotate"),
@@ -171,7 +171,8 @@ function prepareEditor() {
         helper: 'clone',
         cursor: 'move',
         tolerance: 'fit',
-        revert: true
+        revert: true,
+        grid: [1, 1]
     });
 
     $("#droppable").droppable({
@@ -335,8 +336,15 @@ function rotate(pi_id, pi_value) {
         thisElement.css("rotate", newDeg + "deg");
     }
 }
-
-//Function that takes the image path from input with id image-path and sets it as background image of div with id droppable
+/**
+ * Sets the image for a specific HTML element based on user input.
+ * The image path is retrieved from an input field with the id "image-path".
+ * The image is set on a div with the id "droppable".
+ * The opacity of the image is determined by the value of an input field with the id "image-opacity".
+ * The base URL for the image is retrieved from a data attribute ("data-app-files-path") on the div with the id "droppable".
+ * If a checkbox with the id "background-switch" is checked, the image is set as the background image of the div.
+ * If the checkbox is not checked, any existing background image on the div is removed.
+ */
 function setImage() {
     var imagePath = document.getElementById("image-path").value;
     var image = document.getElementById("droppable");
@@ -366,7 +374,7 @@ function select(pi_element) {
     } else {
         var selectedElement = this.event.target;
     }
-    if (!$(selectedElement).parent().hasClass('components-row')) {
+    if (!$(selectedElement).closest('.components-row').length > 0) {
         if (!$(selectedElement).hasClass('ui-resizable-handle')) {
             if (!$(selectedElement).hasClass('component') && !$(selectedElement).hasClass('id-input') && !$(selectedElement).hasClass('ignore-selected')) {
                 selectedElement = $(selectedElement).closest('.component');
@@ -449,73 +457,17 @@ function alignSelectedDivs(axis) {
 }
 
 /**
- * Moves all selected divs with class "selected" based on the drag distance of the dragged div.
+ * Clones all selected div elements and appends them to the div with the id "droppable".
+ * Each cloned div is made draggable and is given a new unique id.
+ * The "selected" class is added to each cloned div.
+ * After cloning, all original divs are deselected.
+ * The cloned divs are inserted right after the original divs.
+ * A 'dragstop' event is bound to each cloned div, which calls the 'select' function when the div is done being dragged.
  */
-function moveSelectedDivsOnDrag() {
-    const selectedDivs = document.querySelectorAll('.selected');
-
-    let initialX, initialY, draggedDiv;
-
-    /**
-     * @param {MouseEvent} event - The drag start event.
-     */
-    function handleDragStart(event) {
-        draggedDiv = event.target;
-        initialX = event.clientX;
-        initialY = event.clientY;
-
-        // Add event listeners to handle the dragging and end of dragging for all selected divs.
-        document.addEventListener('mousemove', handleDrag);
-        document.addEventListener('mouseup', handleDragEnd);
-    }
-
-    /**
-     * @param {MouseEvent} event - The drag event.
-     */
-    function handleDrag(event) {
-        if (!draggedDiv) return;
-
-        // Calculate the distance the dragged div has moved.
-        const deltaX = event.clientX - initialX;
-        const deltaY = event.clientY - initialY;
-
-        // Move all selected divs based on the drag distance.
-        for (const div of selectedDivs) {
-            if (div !== draggedDiv && div.classList.contains('selected')) {
-                // Adjust the div's position by the same amount as the dragged div.
-                div.style.left = `${parseFloat(div.style.left) + deltaX}px`;
-                div.style.top = `${parseFloat(div.style.top) + deltaY}px`;
-            }
-        }
-
-        // Update the initial position for the next drag event.
-        initialX = event.clientX;
-        initialY = event.clientY;
-    }
-
-    /**
-     * @param {MouseEvent} event - The end of the drag event.
-     */
-    function handleDragEnd(event) {
-        // Remove event listeners when the drag is over.
-        document.removeEventListener('mousemove', handleDrag);
-        document.removeEventListener('mouseup', handleDragEnd);
-        draggedDiv = null;
-    }
-
-    // Add event listeners to start the dragging for all selected divs.
-    for (const div of selectedDivs) {
-        div.addEventListener('mousedown', handleDragStart);
-    }
-}
-
 function copyAndPasteDiv() {
     var allSelected = Array.from($('.selected'));
     deselectAll();
     allSelected.forEach(element => {
-
-        //const originalDiv = document.getElementById(id);
-
         // Clone the original DIV
         const newDiv = element.cloneNode(true);
 
@@ -526,7 +478,7 @@ function copyAndPasteDiv() {
 
         // Insert the new DIV right after the original DIV
         $('#droppable').append(newDiv);
-        $(newDiv).draggable();
+        $(newDiv).draggable({grid: [1, 1]});
         $(newDiv).bind('dragstop', function () { select(this) });
     });
 

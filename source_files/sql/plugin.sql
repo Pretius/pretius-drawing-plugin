@@ -1,3 +1,12 @@
+/**
+ * Function: resize
+ * Description: Resizes the size based on the given percentage.
+ * 
+ * @param pi_size       IN VARCHAR2 - The size to be resized.
+ * @param pi_percent    IN NUMBER - The percentage to resize the size.
+ * 
+ * @return VARCHAR2 - The resized size.
+ */
 FUNCTION resize (
   pi_size in varchar2, 
   pi_percent in number default 1
@@ -10,7 +19,16 @@ begin
                 to_number(replace(replace(pi_size,'.',','),'px','')) * pi_percent
                 ) ||'px';
 end resize;
-----
+/**
+ * Function: render_region
+ * Description: Renders the region for the drawing plugin.
+ * 
+ * @param p_region              IN apex_plugin.t_region - The region object.
+ * @param p_plugin              IN apex_plugin.t_plugin - The plugin object.
+ * @param p_is_printer_friendly IN BOOLEAN - Indicates if the rendering is for printer-friendly version.
+ * 
+ * @return apex_plugin.t_region_render_result - The result of the region rendering.
+ */
 FUNCTION render_region(p_region              IN apex_plugin.t_region,
                        p_plugin              IN apex_plugin.t_plugin,
                        p_is_printer_friendly IN BOOLEAN)
@@ -195,10 +213,10 @@ BEGIN
         htp.p('<div class="json-data-'||l_region_id||'" data-json='''|| ',' || v_json ||'''></div>');
       end if;
     EXCEPTION WHEN OTHERS THEN 
-        htp.p('<div> ERROR ' || i || '</div>');
+        htp.p('<div> ERROR '||i ||', '|| sqlerrm || '</div>');
     END;
   end loop;
-  
+  --------------------------------------------------------
   v_json_enclave := v_json_enclave || '}';
   --Editable or not
   BEGIN
@@ -226,7 +244,16 @@ BEGIN
   --
 END render_region;
 ------------------------------------------------
-------------------------------------------------
+/**
+ * FUNCTION ajax_region
+ * 
+ * This function handles the AJAX request for the region.
+ * 
+ * @param p_region     IN  apex_plugin.t_region - The region object.
+ * @param p_plugin     IN  apex_plugin.t_plugin - The plugin object.
+ * 
+ * @return apex_plugin.t_region_ajax_result - The result of the AJAX request.
+ */
 FUNCTION ajax_region(p_region IN apex_plugin.t_region,
                      p_plugin IN apex_plugin.t_plugin)
   RETURN apex_plugin.t_region_ajax_result IS
