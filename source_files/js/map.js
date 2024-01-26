@@ -73,7 +73,11 @@ function recreateFromJson(editable, region_id) {
             if (divData.class.includes("parking-space") || divData.class.includes("parking-space-vertical") || divData.class.includes("label")) {
 
             } else {
-                div[0].insertAdjacentHTML('beforeend', (divData.innerHtml).replaceAll('@', '"'));
+                try{
+                    div[0].insertAdjacentHTML('beforeend', (divData.innerHtml).replaceAll('@', '"'));
+                }catch(err){
+                    console.log('No inner html');
+                }
             }
         }
     }
@@ -82,6 +86,8 @@ function recreateFromJson(editable, region_id) {
         $(".remove")
             .resizable({grid: [1, 1]})
             .draggable({grid: [1, 1]});
+
+        addMobileFunctionality()
     } else {
         // Append the recreated droppable zone to the document body or any desired parent element
         $('#wrapper').append(droppableDiv);
@@ -122,8 +128,8 @@ function saveToJson() {
     $(".remove").each(function () {
         var id = this.id;
         var divData = {
-            width: $(this).css("width"),
-            height: $(this).css("height"),
+            width: Math.round(parseFloat($(this).css("width"))) + 'px',
+            height: Math.round(parseFloat($(this).css("height"))) + 'px',
             top: Math.round(parseFloat($(this).css("top"))) + 'px',
             left: Math.round(parseFloat($(this).css("left"))) + 'px',
             class: $(this).attr('class'),

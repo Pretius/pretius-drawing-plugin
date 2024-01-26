@@ -57,6 +57,7 @@ Pretius Drawing plugin is an Oracle APEX region plugin developed by Tomas Kuchar
  - Added save progress messages
  - New feature - add background image to the plan
  - Removed select functionality from component templates (right panel)
+ - Added basic support for touch devices (drag and drop) [Support for touch devices. #3](https://github.com/Pretius/pretius-drawing-plugin/issues/3)
  - Bug fixes
 
 ## Plugin Installation and configuration

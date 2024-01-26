@@ -224,6 +224,9 @@ BEGIN
         apex_javascript.add_onload_code (
           p_code => 'recreateFromJson(true,'||l_region_id||');',
           p_key  => l_region_id);
+        apex_javascript.add_onload_code (
+          p_code => 'addMobileFunctionality();',
+          p_key  => l_region_id);
       else 
         apex_javascript.add_onload_code (
           p_code => 'recreateFromJson(false,'||l_region_id||');',
