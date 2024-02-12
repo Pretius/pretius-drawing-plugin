@@ -139,7 +139,7 @@ Change the scale of the planner using plus. minus and fit buttons.
 To control height and width of div containing the plan, you can manually add css to div with class "zoom-additional-container".
 
 <div  style="float: left"><p  align="center">
-<img  src="readme_files/resize_settings.png"  width="800"  />
+<img  src="readme_files/zoom-functionality.gif"  width="800"  />
 </p></div>
 
 ### Add planner background
