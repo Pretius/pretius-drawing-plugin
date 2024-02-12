@@ -1,25 +1,4 @@
 /**
- * Function: resize
- * Description: Resizes the size based on the given percentage.
- * 
- * @param pi_size       IN VARCHAR2 - The size to be resized.
- * @param pi_percent    IN NUMBER - The percentage to resize the size.
- * 
- * @return VARCHAR2 - The resized size.
- */
-FUNCTION resize (
-  pi_size in varchar2, 
-  pi_percent in number default 1
-) return varchar2
-is
-    l_clob clob;
-begin
-    return 
-            floor(
-                to_number(replace(replace(pi_size,'.',','),'px','')) * pi_percent
-                ) ||'px';
-end resize;
-/**
  * Function: render_region
  * Description: Renders the region for the drawing plugin.
  * 
@@ -37,7 +16,6 @@ FUNCTION render_region(p_region              IN apex_plugin.t_region,
   l_result   apex_plugin.t_region_render_result;
   l_attr_01  p_region.attribute_01%TYPE := p_region.attribute_01;
   l_editable p_region.attribute_02%TYPE := p_region.attribute_02;
-  l_resize   p_region.attribute_03%TYPE := replace(NVL(p_region.attribute_03,1),'.',',');
   l_left_margin p_region.attribute_04%TYPE := p_region.attribute_04;
   l_top_margin  p_region.attribute_05%TYPE := p_region.attribute_05;
   -- other vars
@@ -128,10 +106,23 @@ BEGIN
       <button class="t-Button t-Button--success" id="save-button" type="button" onclick="testProcess();" title="Save the plan into a collection">Save</button>
     </div>');
   end if;
-  sys.htp.p('<div class="droppable-scroll-parent">
-    <div class="dropable-zone-body '||l_region_id||'" id="droppable" data-app-files-path="#APP_FILES#"></div>
-    </div>
-  </div>');
+  sys.htp.p('<div class="droppable-scroll-parent">');
+  if l_editable = 'N' then 
+    --Start of the additional container
+    sys.htp.p('<div class="zoom-additional-container">');
+  end if;
+  sys.htp.p('<div class="dropable-zone-body '||l_region_id||'" id="droppable" data-app-files-path="#APP_FILES#"></div>
+    </div>');
+  if l_editable = 'N' then 
+    --End of the additional container
+    sys.htp.p('</div>');
+    sys.htp.p('<div class="zoom-button-container">
+        <span onClick="showVal(-0.1);" class="zoom-button fa fa-search-minus" aria-hidden="true"></span>
+        <span onClick="showVal(0.1);" class="zoom-button fa fa-search-plus" aria-hidden="true"></span>
+        <span onClick="showVal(''max'');" class="zoom-button fa fa-layout-modal-blank" aria-hidden="true"></span>
+      </div>');
+  end if;
+  sys.htp.p('</div>');
   --
   if l_editable = 'Y' then 
     sys.htp.p('
@@ -188,15 +179,12 @@ BEGIN
       else 
         v_object_id := '"'||NVL(v_data(8)(i),floor(dbms_random.value(1,1000)))||'":';
       end if;
-      if l_editable = 'Y' then 
-        l_resize := 1;
-      end if;
       v_json := v_object_id ||
         json_object(
-          'width' value resize(v_data(1)(i),l_resize), 
-          'height' value resize(v_data(2)(i),l_resize), 
-          'top' value resize(v_data(3)(i),l_resize), 
-          'left' value resize(v_data(4)(i),l_resize), 
+          'width' value v_data(1)(i),
+          'height' value v_data(2)(i),
+          'top' value v_data(3)(i),
+          'left' value v_data(4)(i),
           'class' value v_data(5)(i), 
           'text' value v_data(6)(i), 
           'available' value v_data(7)(i), 

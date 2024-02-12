@@ -21,7 +21,7 @@ Pretius Drawing plugin is an Oracle APEX region plugin developed by Tomas Kuchar
  - Modular components: User can add components and component types in table and use them without need to change the code
  - Interactivity: User customizable functions for interactive plans
  - Save and load from collection
- - Render the plan in different scale based on region attribute (resize)
+ - Adapt the size of the plan to screen size
  - Add plan background to place components with ease 
 
 <div  style="float: left"><p  align="center">
@@ -59,6 +59,11 @@ Pretius Drawing plugin is an Oracle APEX region plugin developed by Tomas Kuchar
  - Removed select functionality from component templates (right panel)
  - Added basic support for touch devices (drag and drop) [Support for touch devices. #3](https://github.com/Pretius/pretius-drawing-plugin/issues/3)
  - Bug fixes
+
+1.5: February 2024
+
+ - Added zoom functionality, removed scaling
+ - Added deselect of all selected components when click on the planner background
 
 ## Plugin Installation and configuration
 
@@ -129,17 +134,12 @@ end  as onClick
 
  - **Innerhtml**: this column contains any inner html from complicated components, when recreated, the inner html is inserted into main component div, so the visualization stays the same
 
-### Render the plan in different scale
-To render the plan in different scale, the region editable attribute has to be set to No. Then you can change the scale with a number where 1 is 100%.
+### Change the scale of the plan (zoom in and out)
+Change the scale of the planner using plus. minus and fit buttons. 
+To control height and width of div containing the plan, you can manually add css to div with class "zoom-additional-container".
 
 <div  style="float: left"><p  align="center">
 <img  src="readme_files/resize_settings.png"  width="800"  />
-</p></div>
-<div  style="float: left"><p  align="center">
-<img  src="readme_files/resize_base.png"  width="800"  />
-</p></div>
-<div  style="float: left"><p  align="center">
-<img  src="readme_files/resize_after.png"  width="800"  />
 </p></div>
 
 ### Add planner background

@@ -226,6 +226,7 @@ li.horizontal {
 
 .droppable-scroll-parent {
     overflow-y: auto;
+    /*height: -webkit-fill-available;*/
 }
 
 .dropable-zone-body {
@@ -259,4 +260,13 @@ li.horizontal {
 .settings-label{
     font-weight: bold;
     padding: 2px 0px 0px 0px;
+}
+.zoom-additional-container{
+    margin: auto;
+    /*text-align: -webkit-center;*/
+}
+.zoom-button-container{
+    float: right;
+    margin-right: 10px; 
+    margin-top: 10px;
 }

@@ -1,6 +1,6 @@
 {
     "name" : "Pretius Drawing Plugin",
-    "version" : "1.4",
+    "version" : "1.5",
     "description" : "Pretius Drawing plugin helps you draw interactive 2D plans and can be used for example as parking or workspace planner and more",
     "keywords" : ["planner", "report", "apex", "drawing", "drag", "drop", "collection", "parking", "workspace", "map"],
     "homepage" : "https://github.com/pretius/pretius-drawing-plugin",
